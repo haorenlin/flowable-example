@@ -1,4 +1,5 @@
 # 参考文档
+
 https://tkjohn.github.io/flowable-userguide
 
 
@@ -81,6 +82,7 @@ flowable.history-level= # 要使用的历史级别。
 flowable.process-definition-location-prefix=classpath*:/processes/ # 自动部署时查找流程的目录。
 flowable.process-definition-location-suffixes=**.bpmn20.xml,**.bpmn # 'processDefinitionLocationPrefix'路径下需要部署的文件的后缀（扩展名）。
 ```
+
 >更加详细的配置参加[官方文档（5.7.8）](https://tkjohn.github.io/flowable-userguide/#springSpringBoot)：
 
 
@@ -100,6 +102,7 @@ flowable.process-definition-location-suffixes=**.bpmn20.xml,**.bpmn # 'processDe
 ## flowable-boot 一个简单的操作示例
 
 #### 开启一个流程：
+
 ``` http
 curl --location --request POST 'http://localhost:9001/process/start_process' \
 --header 'Content-Type: application/json' \
@@ -115,6 +118,7 @@ curl --location --request POST 'http://localhost:9001/process/start_process' \
 ```
 
 #### 查询报销申请人的任务列表
+
 ``` http
 curl --location --request POST 'http://localhost:9001/process/tasks' \
 --header 'Content-Type: application/json' \
@@ -122,7 +126,9 @@ curl --location --request POST 'http://localhost:9001/process/tasks' \
 	"assignee": "1"
 }'
 ```
+
 - 返回结果展示：
+
 ``` json
 [
     {
@@ -172,11 +178,12 @@ curl --location --request POST 'http://localhost:9001/process/tasks' \
 
 - 使用processInstanceId 获取当前的流程状态图：
 
-![开启一个流程](https://github.com/haorenlin/flowable-example/tree/master/markdown/1.png)
+![开启一个流程](https://github.com/haorenlin/flowable-example/blob/master/markdown/1.png)
 
 
 
 #### 申请人执行流程 （使用上述'id'）
+
 ``` http
 curl --location --request POST 'http://localhost:9001/process/deal_process' \
 --header 'Content-Type: application/json' \
@@ -188,10 +195,12 @@ curl --location --request POST 'http://localhost:9001/process/deal_process' \
 
 - 当前的流程状态图：
 
-![在这里插入图片描述](https://github.com/haorenlin/flowable-example/tree/master/markdown/2.png)
+![在这里插入图片描述](https://github.com/haorenlin/flowable-example/blob/master/markdown/2.png)
 
 ### 老板拒绝
+
 - 获取老板的任务列表，得到该任务的id
+
 ``` http
 curl --location --request POST 'http://localhost:9001/process/tasks' \
 --header 'Content-Type: application/json' \
@@ -201,6 +210,7 @@ curl --location --request POST 'http://localhost:9001/process/tasks' \
 ```
 
 - 执行驳回
+
 ``` http
 curl --location --request POST 'http://localhost:9001/process/deal_process' \
 --header 'Content-Type: application/json' \
@@ -211,9 +221,10 @@ curl --location --request POST 'http://localhost:9001/process/deal_process' \
 	}	
 }'
 ```
+
 - 当前的流程状态图：
 
-![开启一个流程](https://github.com/haorenlin/flowable-example/tree/master/markdown/1.png)
+![开启一个流程](https://github.com/haorenlin/flowable-example/blob/master/markdown/1.png)
 
 老板驳回后，流程又回到报销申请人
 
@@ -229,8 +240,9 @@ curl --location --request POST 'http://localhost:9001/process/deal_process' \
 	}	
 }'
 ```
+
 - 当前的流程状态图：
-![在这里插入图片描述](https://github.com/haorenlin/flowable-example/tree/master/markdown/3.png)
+  ![在这里插入图片描述](https://github.com/haorenlin/flowable-example/blob/master/markdown/3.png)
 
 #### 经理审批通过
 
@@ -244,15 +256,20 @@ curl --location --request POST 'http://localhost:9001/process/deal_process' \
 	}	
 }'
 ```
+
 - 流程结束
 
 #### 说明
+
 - 任务处理人标记的两种方式
-使用 'flowable:assignee' 指定
+  使用 'flowable:assignee' 指定
+
 ``` xml
 <userTask id="fillTask" name="出差报销" flowable:assignee="${taskUser}">
 ```
+
 使用 'class' 指定
+
 ``` xml
 <userTask id="directorTak" name="经理审批">
       <extensionElements>
@@ -260,6 +277,7 @@ curl --location --request POST 'http://localhost:9001/process/deal_process' \
       </extensionElements>
 </userTask>
 ```
+
 ``` java
 import org.flowable.engine.delegate.TaskListener;
 import org.flowable.task.service.delegate.DelegateTask;
